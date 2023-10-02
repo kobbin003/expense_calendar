@@ -6,25 +6,36 @@ export type UserType = {
 	phoneNumber: string | null;
 	photoURL: string | null;
 	uid: string;
+	firestoreUserDocRef?: string;
 };
 
-const initialUserState: UserType | {} = {};
+const initialState: UserType = {
+	displayName: "",
+	email: "",
+	phoneNumber: "",
+	photoURL: "",
+	uid: "",
+	firestoreUserDocRef: "",
+};
 
 export const userSlice = createSlice({
 	name: "user",
-	initialState: initialUserState,
+	initialState,
 	reducers: {
 		setUser: (state, action: PayloadAction<UserType>) => {
 			const { payload } = action;
 			return { ...state, ...payload };
 		},
+		setDocRef: (state, action: PayloadAction<string>) => {
+			return { ...state, firestoreUserDocRef: action.payload };
+		},
 		// updateUser: () => {},
 		removeUser: () => {
-			return {};
+			return initialState;
 		},
 	},
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, setDocRef } = userSlice.actions;
 
 export default userSlice.reducer;
