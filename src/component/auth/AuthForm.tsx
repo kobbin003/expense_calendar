@@ -31,7 +31,6 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(formData);
 		if (type == "Login") {
 			login(formData)
 				.then((res) => {
@@ -68,7 +67,7 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 				})
 				.catch((err) => {
 					console.log("email signup error", err);
-					dispatch(setError("invalid credentials"));
+					dispatch(setError(err.message));
 				});
 		}
 	};

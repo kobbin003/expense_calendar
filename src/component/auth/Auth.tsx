@@ -27,7 +27,6 @@ const Auth = (_: Props) => {
 				if (res) {
 					const { displayName, email, photoURL, phoneNumber, uid } = res;
 					const userInfo = { displayName, email, photoURL, phoneNumber, uid };
-
 					//*  set the user in redux state
 					dispatch(setUser(userInfo));
 
@@ -66,14 +65,14 @@ const Auth = (_: Props) => {
 	}, [pathname]);
 
 	return (
-		<div className="h-screen w-screen flex justify-center items-center">
+		<div className="h-screen w-screen flex flex-col justify-center items-center">
+			{error.message && (
+				<div className="alert alert-warning p-0 rounded-sm px-3 py-1 w-max">
+					{error.message}
+				</div>
+			)}
 			<div className="flex flex-col gap-2">
 				<div>LOGO</div>
-				{error.message && (
-					<div className="alert alert-warning p-0 rounded-sm px-3 py-1">
-						{error.message}
-					</div>
-				)}
 				{pathname.includes("login") ? (
 					<>
 						<AuthForm type="Login" />
