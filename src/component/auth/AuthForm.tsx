@@ -1,21 +1,27 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import login from "../../firebase/auth/login";
 import AuthButton from "../authButton/AuthButton";
 import signUp from "../../firebase/auth/signUp";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../Reducer/userSlice";
-import { addUser } from "../../firestoreFns/addUser";
-import { useNavigate } from "react-router-dom";
+import { addUser } from "../../firestoreFns/user/addUser";
+import { useLocation, useNavigate } from "react-router-dom";
+import { emptyError, setError } from "../../Reducer/errorSlice";
 
 type UserFormType = { email: string; password: string };
 
 const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 	const dispatch = useDispatch();
+
+	const { pathname } = useLocation();
+
 	const navigate = useNavigate();
-	const [formData, setFormData] = useState<UserFormType>({
+
+	const initialFormData = {
 		email: "",
 		password: "",
-	});
+	};
+	const [formData, setFormData] = useState<UserFormType>(initialFormData);
 
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const inputName = e.target.name;
@@ -27,31 +33,50 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 		e.preventDefault();
 		console.log(formData);
 		if (type == "Login") {
-			login(formData).then((res) => {
-				const {
-					user: { displayName, email, photoURL, phoneNumber, uid },
-				} = res;
-				const userInfo = { displayName, email, photoURL, phoneNumber, uid };
-				//*  set the user in redux state
-				dispatch(setUser(userInfo));
-				//* navigate to app
-				navigate(`/${uid}`);
-			});
+			login(formData)
+				.then((res) => {
+					const {
+						user: { displayName, email, photoURL, phoneNumber, uid },
+					} = res;
+					const userInfo = { displayName, email, photoURL, phoneNumber, uid };
+					//*  set the user in redux state
+					dispatch(setUser(userInfo));
+					//* navigate to app
+					navigate(`/${uid}`);
+					//* empty error on success
+					dispatch(emptyError());
+				})
+				.catch((err) => {
+					console.log("email login error", err);
+					dispatch(setError("invalid credentials"));
+				});
 		} else {
-			signUp(formData).then((res) => {
-				const {
-					user: { displayName, email, photoURL, phoneNumber, uid },
-				} = res;
-				const userInfo = { displayName, email, photoURL, phoneNumber, uid };
-				//*  add the user in firestore
-				addUser(userInfo);
-				//*  set the user in redux state
-				dispatch(setUser(userInfo));
-				//* navigate to app
-				navigate(`/${uid}`);
-			});
+			signUp(formData)
+				.then((res) => {
+					const {
+						user: { displayName, email, photoURL, phoneNumber, uid },
+					} = res;
+					const userInfo = { displayName, email, photoURL, phoneNumber, uid };
+					//*  add the user in firestore
+					addUser(userInfo);
+					//*  set the user in redux state
+					dispatch(setUser(userInfo));
+					//* navigate to app
+					navigate(`/${uid}`);
+					//* empty error on success
+					dispatch(emptyError());
+				})
+				.catch((err) => {
+					console.log("email signup error", err);
+					dispatch(setError("invalid credentials"));
+				});
 		}
 	};
+
+	//* reset formData on path change.
+	useEffect(() => {
+		setFormData(initialFormData);
+	}, [pathname]);
 
 	return (
 		<form
