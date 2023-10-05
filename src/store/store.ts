@@ -11,7 +11,8 @@ import {
 	PAUSE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-const rootReducer = combineReducers({ user: userReducer });
+import { alertReducer } from "../Reducer/alertSlice";
+const rootReducer = combineReducers({ user: userReducer, alert: alertReducer });
 
 const persistConfig = {
 	key: "root",
