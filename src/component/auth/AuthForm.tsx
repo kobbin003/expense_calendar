@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../Reducer/userSlice";
 import { addUser } from "../../firestoreFns/user/addUser";
 import { useLocation, useNavigate } from "react-router-dom";
-import { emptyError, setError } from "../../Reducer/errorSlice";
+import { emptyErrorMsg, setErrorMsg } from "../../Reducer/alertSlice";
 
 type UserFormType = { email: string; password: string };
 
@@ -31,6 +31,14 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (!formData.email) {
+			dispatch(setErrorMsg("please provide email"));
+			return;
+		}
+		if (!formData.password) {
+			dispatch(setErrorMsg("please provide password"));
+			return;
+		}
 		if (type == "Login") {
 			login(formData)
 				.then((res) => {
@@ -43,11 +51,11 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 					//* navigate to app
 					navigate(`/${uid}`);
 					//* empty error on success
-					dispatch(emptyError());
+					dispatch(emptyErrorMsg());
 				})
 				.catch((err) => {
 					console.log("email login error", err);
-					dispatch(setError("invalid credentials"));
+					dispatch(setErrorMsg("invalid credentials"));
 				});
 		} else {
 			signUp(formData)
@@ -63,11 +71,11 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 					//* navigate to app
 					navigate(`/${uid}`);
 					//* empty error on success
-					dispatch(emptyError());
+					dispatch(emptyErrorMsg());
 				})
 				.catch((err) => {
 					console.log("email signup error", err);
-					dispatch(setError(err.message));
+					dispatch(setErrorMsg(err.message));
 				});
 		}
 	};

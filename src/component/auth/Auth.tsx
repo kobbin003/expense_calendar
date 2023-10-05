@@ -7,8 +7,9 @@ import { RootState } from "../../store/store";
 import { setUser } from "../../Reducer/userSlice";
 import { addUser } from "../../firestoreFns/user/addUser";
 import { getUser } from "../../firestoreFns/user/getUser";
-import { emptyError, setError } from "../../Reducer/errorSlice";
+import { emptyErrorMsg, setErrorMsg } from "../../Reducer/alertSlice";
 import { useEffect } from "react";
+import Alert from "../alert/Alert";
 
 type Props = {};
 
@@ -19,7 +20,7 @@ const Auth = (_: Props) => {
 
 	const navigate = useNavigate();
 
-	const error = useSelector((state: RootState) => state.error);
+	const alert = useSelector((state: RootState) => state.alert);
 
 	const handleGoogleAuth = () => {
 		googleLogin()
@@ -45,32 +46,28 @@ const Auth = (_: Props) => {
 						});
 
 					//* empty error on success
-					dispatch(emptyError());
+					dispatch(emptyErrorMsg());
 				}
 			})
 			.catch((err) => {
 				console.log("google login error", err);
-				dispatch(setError("your google account not found"));
+				dispatch(setErrorMsg("your google account not found"));
 			});
 	};
 
 	//* empty error on start
 	useEffect(() => {
-		dispatch(emptyError());
+		dispatch(emptyErrorMsg());
 	}, []);
 
 	//* empty error on path change.
 	useEffect(() => {
-		dispatch(emptyError());
+		dispatch(emptyErrorMsg());
 	}, [pathname]);
 
 	return (
 		<div className="h-screen w-screen flex flex-col justify-center items-center">
-			{error.message && (
-				<div className="alert alert-warning p-0 rounded-sm px-3 py-1 w-max">
-					{error.message}
-				</div>
-			)}
+			{alert.errorMessage && <Alert>{alert.errorMessage}</Alert>}
 			<div className="flex flex-col gap-2">
 				<div>LOGO</div>
 				{pathname.includes("login") ? (
