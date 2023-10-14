@@ -41,7 +41,7 @@ const MyCalendar: FC<CalendarType> = ({ dateSelected }) => {
 	const mutedItemsAfter = mutedItemsCalendarAfter(dayOfWeekOfendDate);
 
 	return (
-		<div className="flex-1 h-5/6 grid grid-cols-7 auto-rows-fr ">
+		<div className="flex-1 h-5/6 grid grid-cols-7 grid-rows-1 auto-rows-minfr">
 			{weekDays.map((item, index) => (
 				<CalendarDayHeader
 					content={item}
