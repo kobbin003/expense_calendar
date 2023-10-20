@@ -7,6 +7,7 @@ import { setUser } from "../../Reducer/userSlice";
 import { addUser } from "../../firestoreFns/user/addUser";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyErrorMsg, setErrorMsg } from "../../Reducer/alertSlice";
+import { getUser } from "../../firestoreFns/user/getUser";
 
 type UserFormType = { email: string; password: string };
 
@@ -45,11 +46,18 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 					const {
 						user: { displayName, email, photoURL, phoneNumber, uid },
 					} = res;
-					const userInfo = { displayName, email, photoURL, phoneNumber, uid };
+					const userInfo = {
+						displayName,
+						email,
+						photoURL,
+						phoneNumber,
+						uid,
+						currency: "INR",
+					};
 					//*  set the user in redux state
 					dispatch(setUser(userInfo));
 					//* navigate to app
-					navigate(`/${uid}`);
+					navigate(`/in/${uid}`);
 					//* empty error on success
 					dispatch(emptyErrorMsg());
 				})
@@ -63,13 +71,22 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 					const {
 						user: { displayName, email, photoURL, phoneNumber, uid },
 					} = res;
-					const userInfo = { displayName, email, photoURL, phoneNumber, uid };
+					// add "USD" as default currency
+					const userInfo = {
+						displayName,
+						email,
+						photoURL,
+						phoneNumber,
+						uid,
+						currency: "USD",
+					};
+					userInfo.currency = "USD";
 					//*  add the user in firestore
 					addUser(userInfo);
 					//*  set the user in redux state
 					dispatch(setUser(userInfo));
 					//* navigate to app
-					navigate(`/${uid}`);
+					navigate(`/in/${uid}`);
 					//* empty error on success
 					dispatch(emptyErrorMsg());
 				})

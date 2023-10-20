@@ -27,12 +27,22 @@ const Auth = (_: Props) => {
 			.then((res) => {
 				if (res) {
 					const { displayName, email, photoURL, phoneNumber, uid } = res;
-					const userInfo = { displayName, email, photoURL, phoneNumber, uid };
+
+					// add "USD" as default currency
+					const userInfo = {
+						displayName,
+						email,
+						photoURL,
+						phoneNumber,
+						uid,
+						currency: "INR",
+					};
+
 					//*  set the user in redux state
 					dispatch(setUser(userInfo));
 
 					//* navigate to app
-					navigate(`/${uid}`);
+					navigate(`/in/${uid}`);
 
 					//*  skip adding the user in firestore if already present.
 					email &&
@@ -70,21 +80,7 @@ const Auth = (_: Props) => {
 			{alert.errorMessage && <Alert>{alert.errorMessage}</Alert>}
 			<div className="flex flex-col gap-2">
 				<div>LOGO</div>
-				{pathname.includes("login") ? (
-					<>
-						<AuthForm type="Login" />
-						<div className="w-full h-0 border-1 border-gray-300"></div>
-						<div className="w-full flex">
-							<p>Don't have an account?</p>{" "}
-							<Link
-								to={`/`}
-								className="text-blue-600 pl-1"
-							>
-								Sign up
-							</Link>
-						</div>
-					</>
-				) : (
+				{!pathname.includes("login") ? (
 					<>
 						<AuthForm type="Signup" />
 						<div className="w-full flex items-center">
@@ -106,6 +102,20 @@ const Auth = (_: Props) => {
 								className="text-blue-600 pl-1"
 							>
 								Log in
+							</Link>
+						</div>
+					</>
+				) : (
+					<>
+						<AuthForm type="Login" />
+						<div className="w-full h-0 border-1 border-gray-300"></div>
+						<div className="w-full flex">
+							<p>Don't have an account?</p>{" "}
+							<Link
+								to={`/`}
+								className="text-blue-600 pl-1"
+							>
+								Sign up
 							</Link>
 						</div>
 					</>
