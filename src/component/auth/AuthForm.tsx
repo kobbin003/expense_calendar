@@ -7,7 +7,6 @@ import { setUser } from "../../Reducer/userSlice";
 import { addUser } from "../../firestoreFns/user/addUser";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyErrorMsg, setErrorMsg } from "../../Reducer/alertSlice";
-import { getUser } from "../../firestoreFns/user/getUser";
 
 type UserFormType = { email: string; password: string };
 
