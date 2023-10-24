@@ -1,15 +1,16 @@
 import { Link, useParams } from "react-router-dom";
-import DaysExpenseList from "../../component/daysExpenseList/DaysExpenseList";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { useGetExpenseByDay } from "../../hook/useGetExpenseByDay";
+import { useFormatCurrency } from "../../hook/useFormatCurrency";
+import DaysExpenseLists from "../../component/daysExpenseList/DaysExpenseLists";
 
 type Props = {};
 
 const Day = ({}: Props) => {
-	const { firestoreUserDocRef } = useSelector((state: RootState) => state.user);
+	const { firestoreUserDocId } = useSelector((state: RootState) => state.user);
 
 	const { user, day } = useParams();
 
@@ -19,8 +20,10 @@ const Day = ({}: Props) => {
 
 	const { data, error, isLoading } = useGetExpenseByDay(
 		day || "",
-		firestoreUserDocRef || ""
+		firestoreUserDocId || ""
 	);
+
+	const totalExpenseForDayWithCurrency = useFormatCurrency(totalExpenseForDay);
 
 	useEffect(() => {
 		let total = 0;
@@ -41,12 +44,12 @@ const Day = ({}: Props) => {
 
 	return (
 		<div>
-			<Link to={`/${user}`}>Calendar</Link>
+			<Link to={`/in/${user}`}>Calendar</Link>
 
 			<div className="flex justify-between w-max">
-				<p>Total: {totalExpenseForDay}</p>
+				<p>Total:{totalExpenseForDayWithCurrency}</p>
 			</div>
-			<DaysExpenseList expenses={expenses} />
+			<DaysExpenseLists expenses={expenses} />
 		</div>
 	);
 };
