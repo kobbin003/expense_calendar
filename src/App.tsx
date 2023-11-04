@@ -1,38 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
-import CalendarNav from "./component/CalendarNav";
-import MyCalendar from "./component/MyCalendar";
 import Header from "./component/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import { getUser } from "./firestoreFns/user/getUser";
-import { setDocRef } from "./Reducer/userSlice";
+import { UserType, setUser } from "./Reducer/userSlice";
+import { Outlet } from "react-router-dom";
+import Alert from "./component/alert/Alert";
+import {
+	emptyErrorMsg,
+	emptySuccessMsg,
+	setIsLoading,
+} from "./Reducer/alertSlice";
 
 function App() {
-	const initialDate = new Date();
-	const [dateSelected, setDateSelected] = useState<Date>(initialDate);
-	const user = useSelector((state: RootState) => state.user);
+	const { email } = useSelector((state: RootState) => state.user);
+
 	const dispatch = useDispatch();
+
+	const { errorMessage, successMessage, isLoading } = useSelector(
+		(state: RootState) => state.alert
+	);
+
+	/** set the user's doc ref on initiation */
 	useEffect(() => {
-		if (user.email) {
-			getUser(user.email).then((snapShot) => {
-				const docRef = snapShot?.docs[0].id;
-				if (docRef) {
-					dispatch(setDocRef(docRef));
+		if (email) {
+			getUser(email).then((snapShot) => {
+				const docRefId = snapShot?.docs[0].id;
+				const userInfo = snapShot?.docs[0].data() as UserType;
+				if (docRefId && userInfo) {
+					//* update the user redux state with the userInfo along with docRefId
+					dispatch(setUser({ ...userInfo, firestoreUserDocId: docRefId }));
 				}
 			});
 		}
-	}, []);
+	}, [email]);
 
+	/** refresh alerts on initiation */
+	useEffect(() => {
+		dispatch(emptyErrorMsg());
+		dispatch(emptySuccessMsg());
+		dispatch(setIsLoading(false));
+	}, []);
 	return (
-		<div className="w-screen h-screen flex flex-col overflow-hidden font-sans antialiased py-1 px-1">
-			<Header />
-			<CalendarNav
-				dateSelected={dateSelected}
-				setDateSelected={setDateSelected}
-			/>
-			<MyCalendar dateSelected={dateSelected} />
-		</div>
+		<>
+			{email ? (
+				<div className="w-screen h-screen flex flex-col overflow-hidden font-sans antialiased py-1 px-1">
+					{successMessage && <Alert type="success">{successMessage}</Alert>}
+					{errorMessage && <Alert type="success">{errorMessage}</Alert>}
+					{isLoading && <Alert type="info">Loading...</Alert>}
+					<Header />
+					<Outlet />
+				</div>
+			) : (
+				<p>Loading...</p>
+			)}
+		</>
 	);
 }
 
