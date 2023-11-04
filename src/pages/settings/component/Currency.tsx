@@ -1,16 +1,16 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import currencies from "../../../data/currencyList.json";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
-import { setCurrency } from "../../../Reducer/userSlice";
+// import { setCurrency } from "../../../Reducer/userSlice";
+import { UserType } from "../../../Reducer/userSlice";
 
-type Props = {};
+type Props = {
+	settingsProfile: Partial<UserType>;
+	setSettingsProfile: React.Dispatch<React.SetStateAction<Partial<UserType>>>;
+};
 
-const Currency = ({}: Props) => {
-	const { currency } = useSelector((state: RootState) => state.user);
-	const dispatch = useDispatch();
-	const [selectedValue, setSelectedValue] = useState(currency);
+const Currency = ({ settingsProfile, setSettingsProfile }: Props) => {
 	// Fetch the list of available currencies using Intl.NumberFormat
+	const { currency } = settingsProfile;
 
 	const currenciesArray = Object.entries(currencies);
 
@@ -20,17 +20,18 @@ const Currency = ({}: Props) => {
 	}));
 
 	const handleOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setSelectedValue(e.target.value);
-		dispatch(setCurrency(e.target.value));
+		const currency = e.target.value;
+
+		setSettingsProfile((prev) => ({ ...prev, currency }));
 	};
 
 	return (
-		<div>
+		<div className="flex gap-2">
 			<label htmlFor="currency">Choose your currency</label>
 			<select
 				name="currency"
 				id="currency"
-				value={selectedValue}
+				value={currency}
 				onChange={handleOnChange}
 				className="hover:cursor-pointer"
 			>
