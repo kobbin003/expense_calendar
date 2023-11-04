@@ -40,7 +40,7 @@ const Header = ({}: Props) => {
 						<img
 							src={photoURL ? photoURL : "/src/assets/defaultProfile.svg"}
 							alt=""
-							className="border border-gray-500 rounded-full h-7"
+							className="border border-gray-500 rounded-full h-7 w-7"
 						/>
 					</button>
 					<ul
