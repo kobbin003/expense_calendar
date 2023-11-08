@@ -6,7 +6,7 @@ import { RootState } from "../../store/store";
 import AddExpense from "../addExpense/AddExpense";
 import MonthsExpense from "./MonthsExpense";
 import MonthSelector from "../monthselector/MonthSelector";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DateContext } from "../../context/DateContext";
 
 const CalendarNav = () => {
@@ -15,6 +15,7 @@ const CalendarNav = () => {
 	const today = getDateTimeComponents(dateSelected);
 
 	const { firestoreUserDocId } = useSelector((state: RootState) => state.user);
+	const [showMonthSelector, setShowMonthSelector] = useState(false);
 
 	const handleClickGoToPrevMonth = () => {
 		const prevMonth = subMonths(dateSelected, 1);
@@ -24,6 +25,10 @@ const CalendarNav = () => {
 	const handleClickGoToNextMonth = () => {
 		const prevMonth = addMonths(dateSelected, 1);
 		setDateSelected(prevMonth);
+	};
+
+	const toggleMonthSelector = () => {
+		setShowMonthSelector((prev) => !prev);
 	};
 
 	return (
@@ -44,10 +49,10 @@ const CalendarNav = () => {
 						<div>
 							<div className="stat-title">Monthly expense</div>
 							<div className="stat-value text-base sm:text-lg md:text-xl min-w-[150px] sm:min-w-[200px]">
-								<button>
+								<button onClick={toggleMonthSelector}>
 									{monthIndexConverter(today.month)}&nbsp;{today.year}
 								</button>
-								<MonthSelector />
+								{showMonthSelector && <MonthSelector />}
 							</div>
 
 							{firestoreUserDocId && (
