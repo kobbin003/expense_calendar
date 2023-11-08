@@ -9,23 +9,22 @@ type AlertProp = {
 };
 
 const Alert = ({ children, type }: AlertProp) => {
-	const alertViews = {
-		success: { component: Success, alertType: "alert-success" },
-		error: { component: Error, alertType: "alert-error" },
-		info: { component: Loading, alertType: "alert-info" },
+	const alerts = {
+		success: { component: Success, alertClass: "alert-success" },
+		error: { component: Error, alertClass: "alert-error" },
+		info: { component: Loading, alertClass: "alert-info" },
 	};
-	const CurrentAlert = alertViews[type].component;
 
-	const alerttype = alertViews[type].alertType;
+	const CurrentAlert = alerts[type].component;
+
+	const alertClass = alerts[type].alertClass;
 
 	return (
-		<div className="fixed w-screen flex justify-center top-2">
-			{alerttype && (
-				<div className={`alert ${alerttype} p-0 rounded-md px-3 py-1 w-max`}>
-					<CurrentAlert />
-					<span>{children}</span>
-				</div>
-			)}
+		<div className="fixed w-screen flex justify-center top-2 z-30">
+			<div className={`alert ${alertClass} p-0 rounded-md px-3 py-1 w-max`}>
+				<CurrentAlert />
+				<span>{children}</span>
+			</div>
 		</div>
 	);
 };
