@@ -5,14 +5,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import AddExpense from "../addExpense/AddExpense";
 import MonthsExpense from "./MonthsExpense";
+import MonthSelector from "../monthselector/MonthSelector";
+import { useContext } from "react";
+import { DateContext } from "../../context/DateContext";
 
-type Props = {
-	dateSelected: Date;
-	setDateSelected: React.Dispatch<React.SetStateAction<Date>>;
-};
+const CalendarNav = () => {
+	const { dateSelected, setDateSelected } = useContext(DateContext);
 
-const CalendarNav = ({ dateSelected, setDateSelected }: Props) => {
 	const today = getDateTimeComponents(dateSelected);
+
 	const { firestoreUserDocId } = useSelector((state: RootState) => state.user);
 
 	const handleClickGoToPrevMonth = () => {
@@ -43,7 +44,10 @@ const CalendarNav = ({ dateSelected, setDateSelected }: Props) => {
 						<div>
 							<div className="stat-title">Monthly expense</div>
 							<div className="stat-value text-base sm:text-lg md:text-xl min-w-[150px] sm:min-w-[200px]">
-								{monthIndexConverter(today.month)}&nbsp;{today.year}
+								<button>
+									{monthIndexConverter(today.month)}&nbsp;{today.year}
+								</button>
+								<MonthSelector />
 							</div>
 
 							{firestoreUserDocId && (
@@ -72,5 +76,9 @@ const CalendarNav = ({ dateSelected, setDateSelected }: Props) => {
 		</div>
 	);
 };
-
+// const CalendarNav = () => {
+// 	const xx = useContext(DateContext);
+// 	console.log("xx", xx);
+// 	return <p>Calendar</p>;
+// };
 export default CalendarNav;

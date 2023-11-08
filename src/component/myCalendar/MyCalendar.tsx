@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { useContext } from "react";
 import { mutedItemsCalendarBefore } from "../../utils/mutedItemsCalendarBefore";
 import { mutedItemsCalendarAfter } from "../../utils/mutedItemsCalendarAfter";
 import { getAlldaysOfMonth } from "../../utils/date/date-fns/getAlldaysOfMonth";
@@ -7,6 +7,7 @@ import { getMonthInfo } from "../../utils/date/date-fns/getMonthInfo";
 import { subMonths } from "date-fns";
 import CalendarDayHeader from "./MyCalendarComponents/CalendarDayHeader";
 import MutedCalendarDay from "./MyCalendarComponents/MutedCalendarDay";
+import { DateContext } from "../../context/DateContext";
 
 export const weekDays = [
 	"Sunday",
@@ -18,11 +19,9 @@ export const weekDays = [
 	"Saturday",
 ];
 
-type CalendarType = {
-	dateSelected: Date;
-};
+const MyCalendar = () => {
+	const { dateSelected } = useContext(DateContext);
 
-const MyCalendar: FC<CalendarType> = ({ dateSelected }) => {
 	const { dayOfWeekOfstartDate, dayOfWeekOfendDate } =
 		getMonthInfo(dateSelected);
 
