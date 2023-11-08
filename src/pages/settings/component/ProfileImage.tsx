@@ -54,7 +54,7 @@ const ProfileImage = ({
 
 	/** set a limit in the size of the photo uploaded */
 	return (
-		<div className="flex">
+		<div className="flex gap-2 border-b-2 border-b-gray-100 shadow-md p-2">
 			<p className="pr-2 flex flex-col">
 				<span>choose your profile photo </span>
 				<small>[ should be less than 200MB ]</small>

@@ -26,21 +26,21 @@ const Currency = ({ settingsProfile, setSettingsProfile }: Props) => {
 	};
 
 	return (
-		<div className="flex gap-2">
+		<div className="flex gap-2 flex-col sm:flex-row border-b-2 border-b-gray-100 shadow-md p-2">
 			<label htmlFor="currency">Choose your currency</label>
 			<select
 				name="currency"
 				id="currency"
 				value={currency}
 				onChange={handleOnChange}
-				className="hover:cursor-pointer"
+				className="hover:cursor-pointer text-sm p-1"
 			>
-				<option value=""></option>
 				{currencyList.map((item) => {
 					return (
 						<option
 							key={item.currency}
 							value={item.currency}
+							className="text-sm bg-red"
 						>
 							{item.currencyName}
 						</option>

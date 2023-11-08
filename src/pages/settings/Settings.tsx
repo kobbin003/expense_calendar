@@ -115,7 +115,7 @@ const Settings = ({}: Props) => {
 	}, [settingsProfile]);
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 p-2">
 			<Link
 				to={`/in/${uid}`}
 				className=""
@@ -135,7 +135,7 @@ const Settings = ({}: Props) => {
 				settingsProfile={settingsProfile}
 				setSettingsProfile={setSettingsProfile}
 			/>
-			<div>
+			<div className="p-2">
 				<button
 					className="btn btn-accent rounded-sm"
 					onClick={saveSettings}
