@@ -10,11 +10,11 @@ export const addExpense = async (userDocId: string, expense: ExpenseType) => {
 		"expenses"
 	);
 	try {
-		const docRef = await addDoc(userExpenseCollectionRef, {
+		await addDoc(userExpenseCollectionRef, {
 			...expense,
 		});
 
-		console.log("Document written with ID: ", docRef);
+		// console.log("Document written with ID: ", docRef);
 	} catch (error) {
 		console.error("Error adding document: ", error);
 	}
