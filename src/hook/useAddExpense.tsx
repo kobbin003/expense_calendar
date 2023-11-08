@@ -6,7 +6,7 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebaseConfig";
-import { ExpenseType } from "../firestoreFns/expense/addExpense";
+import { ExpenseType } from "../types/expense";
 
 const useAddExpense = (userDocRef: string, expense: ExpenseType) => {
 	const [data, setData] = useState<DocumentReference<

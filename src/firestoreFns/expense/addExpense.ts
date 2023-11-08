@@ -1,34 +1,20 @@
-import {
-	addDoc,
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	query,
-	where,
-} from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
+import { ExpenseType } from "../../types/expense";
 
-export type ExpenseType = {
-	expenseDate: Date;
-	amount: number;
-	description?: string;
-};
-export const addExpense = async (userDocRef: string, expense: ExpenseType) => {
+export const addExpense = async (userDocId: string, expense: ExpenseType) => {
 	const userExpenseCollectionRef = collection(
 		db,
 		"users",
-		userDocRef,
+		userDocId,
 		"expenses"
 	);
 	try {
 		const docRef = await addDoc(userExpenseCollectionRef, {
-			expense,
+			...expense,
 		});
-		// const docRef = await addDoc(userExpenseCollectionRef, {
-		// 	...expense,
-		// });
-		console.log("Document written with ID: ", docRef.id);
+
+		console.log("Document written with ID: ", docRef);
 	} catch (error) {
 		console.error("Error adding document: ", error);
 	}

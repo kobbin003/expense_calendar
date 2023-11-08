@@ -1,11 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type ErrorType = {
+export type AlertsType = {
 	errorMessage: string;
 	successMessage: string;
+	isLoading: boolean;
 };
 
-const initialState: ErrorType = { errorMessage: "", successMessage: "" };
+const initialState: AlertsType = {
+	errorMessage: "",
+	successMessage: "",
+	isLoading: false,
+};
 
 export const alertSlice = createSlice({
 	name: "errors",
@@ -15,18 +20,26 @@ export const alertSlice = createSlice({
 			state.errorMessage = action.payload;
 		},
 		setSuccessMsg: (state, action: PayloadAction<string>) => {
-			state.errorMessage = action.payload;
+			state.successMessage = action.payload;
 		},
 		emptyErrorMsg: (state) => {
 			state.errorMessage = "";
 		},
 		emptySuccessMsg: (state) => {
-			state.errorMessage = "";
+			state.successMessage = "";
+		},
+		setIsLoading: (state, action: PayloadAction<boolean>) => {
+			state.isLoading = action.payload;
 		},
 	},
 });
 
-export const { setErrorMsg, setSuccessMsg, emptyErrorMsg, emptySuccessMsg } =
-	alertSlice.actions;
+export const {
+	setErrorMsg,
+	setSuccessMsg,
+	emptyErrorMsg,
+	emptySuccessMsg,
+	setIsLoading,
+} = alertSlice.actions;
 
 export const alertReducer = alertSlice.reducer;

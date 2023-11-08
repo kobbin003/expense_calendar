@@ -9,8 +9,13 @@ type Props = {
 export const DaysExpenseList = ({ expense, time }: Props) => {
 	const expenseAmountWithCurrency = useFormatCurrency(expense.amount);
 	return (
-		<li className="border-b-2 w-max">
-			you spent {expenseAmountWithCurrency} on {expense.description} at {time}
+		<li className="border-b-2 w-max p-1 mb-2 text-sm sm:text-base text-gray-500">
+			you spent{" "}
+			<span className="italic font-medium text-black">
+				{expenseAmountWithCurrency}
+			</span>{" "}
+			on <span className="font-medium text-black">{expense.description}</span>{" "}
+			at <span className="font-medium text-black">{time}</span>
 		</li>
 	);
 };

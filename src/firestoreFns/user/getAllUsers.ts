@@ -1,5 +1,5 @@
 import { getDocs } from "firebase/firestore";
-import { usersCollectionRef } from "../firebase/firebaseConfig";
+import { usersCollectionRef } from "../../firebase/firebaseConfig";
 
 export async function getAllUsers() {
 	try {

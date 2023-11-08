@@ -8,7 +8,7 @@ import {
 	setIsLoading,
 	setSuccessMsg,
 } from "../../Reducer/alertSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProfileImage from "./component/ProfileImage";
 import {
 	UserType,
@@ -29,8 +29,12 @@ const Settings = ({}: Props) => {
 		(state: RootState) => state.user
 	);
 
-	// const { successMessage } = useSelector((state: RootState) => state.alert);
 	const dispatch = useDispatch();
+
+	const [disableSave, setDisableSave] = useState(true);
+
+	/** set the initial value as ref; useful to check if values are changed */
+	const initialStateRef = useRef({ currency, photoURL });
 
 	/** set the initial state from the redux state */
 	const [settingsProfile, setSettingsProfile] = useState<Partial<UserType>>({
@@ -41,8 +45,9 @@ const Settings = ({}: Props) => {
 	const [photoFile, setPhotoFile] = useState<File>();
 
 	// get the url from the firestore storage
-	const getStoredPhotoURL = async () => {
-		const storageRef = ref(storage, "profilePic");
+	const getUpdatedPhotoURL = async () => {
+		const storageRef = ref(storage, uid);
+
 		if (photoFile) {
 			await uploadBytes(storageRef, photoFile);
 			const url = getDownloadURL(storageRef);
@@ -77,12 +82,13 @@ const Settings = ({}: Props) => {
 		// update user redux state
 		dispatch(updateUserRedux(settingsProfile));
 
-		/** need to store photo only if image File is selected */
+		/** need to store photo & save it's url only if image File is selected */
 		if (photoFile) {
-			getStoredPhotoURL().then((url) => {
+			getUpdatedPhotoURL().then((url) => {
 				updateUsersDoc(url);
 			});
 		} else {
+			/** else just save the currency */
 			updateUsersDoc();
 		}
 	};
@@ -90,6 +96,23 @@ const Settings = ({}: Props) => {
 	useEffect(() => {
 		dispatch(emptySuccessMsg());
 	}, []);
+
+	/** enable save button only if values are changed */
+	useEffect(() => {
+		if (
+			settingsProfile.currency !== initialStateRef.current.currency ||
+			settingsProfile.photoURL !== initialStateRef.current.photoURL
+		) {
+			console.log(
+				"enable save",
+				settingsProfile.currency,
+				initialStateRef.current.currency
+			);
+			setDisableSave(false);
+		} else {
+			setDisableSave(true);
+		}
+	}, [settingsProfile]);
 
 	return (
 		<div className="flex flex-col gap-2">
@@ -116,6 +139,7 @@ const Settings = ({}: Props) => {
 				<button
 					className="btn btn-accent rounded-sm"
 					onClick={saveSettings}
+					disabled={disableSave}
 				>
 					Save
 				</button>

@@ -1,5 +1,10 @@
 import { ChangeEvent } from "react";
 import { UserType } from "../../../Reducer/userSlice";
+import Compressor from "compressorjs";
+import { checkSizeImage } from "../../../utils/checkSizeImage";
+import { emptyErrorMsg, setErrorMsg } from "../../../Reducer/alertSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 type Props = {
 	settingsProfile: Partial<UserType>;
@@ -7,25 +12,53 @@ type Props = {
 	setPhotoFile: React.Dispatch<React.SetStateAction<File | undefined>>;
 };
 
+// const compressPhotoFile = (file: File) => {};
 const ProfileImage = ({
 	settingsProfile,
 	setSettingsProfile,
 	setPhotoFile,
 }: Props) => {
 	const { photoURL } = settingsProfile;
-
+	const { ...alerts } = useSelector((state: RootState) => state.alert);
+	console.log("alerts", alerts);
+	const dispatch = useDispatch();
 	const handleOnChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const file = e.target.files[0];
 			const photoURL = URL.createObjectURL(file);
-			setSettingsProfile((prev) => ({ ...prev, photoURL }));
-			setPhotoFile(file);
+			const photoAllowedToStore = checkSizeImage(file);
+			if (photoAllowedToStore) {
+				console.log("good size", file.size);
+				setSettingsProfile((prev) => ({ ...prev, photoURL }));
+				/** compressfile using compressjs */
+				new Compressor(file, {
+					quality: 0.6,
+					success: (result) => {
+						if (result) {
+							// set the result type as File
+							const compressedFile = result as File;
+							setPhotoFile(compressedFile);
+						}
+					},
+				});
+			} else {
+				//set error message
+				dispatch(setErrorMsg("File size larger than 200mb"));
+				setTimeout(() => {
+					dispatch(emptyErrorMsg());
+				}, 2000);
+				console.log("size too large", file.size);
+			}
 		}
 	};
 
+	/** set a limit in the size of the photo uploaded */
 	return (
 		<div className="flex">
-			<p className="pr-2">choose your profile photo</p>
+			<p className="pr-2 flex flex-col">
+				<span>choose your profile photo </span>
+				<small>[ should be less than 200MB ]</small>
+			</p>
 			<label htmlFor="imageFile">
 				<input
 					name="img"

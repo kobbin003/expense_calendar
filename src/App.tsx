@@ -47,7 +47,7 @@ function App() {
 			{email ? (
 				<div className="w-screen h-screen flex flex-col overflow-hidden font-sans antialiased py-1 px-1">
 					{successMessage && <Alert type="success">{successMessage}</Alert>}
-					{errorMessage && <Alert type="success">{errorMessage}</Alert>}
+					{errorMessage && <Alert type="error">{errorMessage}</Alert>}
 					{isLoading && <Alert type="info">Loading...</Alert>}
 					<Header />
 					<Outlet />

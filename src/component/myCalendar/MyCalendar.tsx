@@ -41,40 +41,43 @@ const MyCalendar: FC<CalendarType> = ({ dateSelected }) => {
 	const mutedItemsAfter = mutedItemsCalendarAfter(dayOfWeekOfendDate);
 
 	return (
-		<div className="flex-1 h-5/6 grid grid-cols-7 grid-rows-1 auto-rows-minfr">
-			{weekDays.map((item, index) => (
-				<CalendarDayHeader
-					content={item}
-					key={item + index}
-				/>
-			))}
-
-			{mutedItemsBefore.map((item, index) => {
-				return (
-					<MutedCalendarDay
+		<div className="flex flex-col flex-1 h-5/6 ">
+			<div className="grid grid-cols-7">
+				{weekDays.map((item, index) => (
+					<CalendarDayHeader
 						content={item}
 						key={item + index}
 					/>
-				);
-			})}
+				))}
+			</div>
+			<div className="flex-1 grid grid-cols-7 auto-rows-auto ">
+				{mutedItemsBefore.map((item, index) => {
+					return (
+						<MutedCalendarDay
+							content={item}
+							key={item + index}
+						/>
+					);
+				})}
 
-			{allDaysOfMonth.map((day) => {
-				return (
-					<CalendarDay
-						date={day}
-						key={day.toUTCString()}
-					/>
-				);
-			})}
+				{allDaysOfMonth.map((day) => {
+					return (
+						<CalendarDay
+							date={day}
+							key={day.toUTCString()}
+						/>
+					);
+				})}
 
-			{mutedItemsAfter.map((item, index) => {
-				return (
-					<MutedCalendarDay
-						content={item}
-						key={item + index}
-					/>
-				);
-			})}
+				{mutedItemsAfter.map((item, index) => {
+					return (
+						<MutedCalendarDay
+							content={item}
+							key={item + index}
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 };

@@ -9,13 +9,7 @@ export const getMonthInfo = (dateSelected: Date) => {
 	// day of week starts from 0, like array's index
 	const dayOfWeekOfstartDate = getDay(startDate);
 	const dayOfWeekOfendDate = getDay(endDate);
-	console.log(
-		"getMonthInfo",
-		dateSelected,
-		dayOfWeekOfstartDate,
-		dayOfWeekOfendDate,
-		numberOfDaysInMonth
-	);
+
 	return {
 		dayOfWeekOfstartDate,
 		dayOfWeekOfendDate,

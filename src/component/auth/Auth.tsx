@@ -35,7 +35,7 @@ const Auth = (_: Props) => {
 						photoURL,
 						phoneNumber,
 						uid,
-						currency: "INR",
+						currency: "USD",
 					};
 
 					//*  set the user in redux state
@@ -77,8 +77,8 @@ const Auth = (_: Props) => {
 
 	return (
 		<div className="h-screen w-screen flex flex-col justify-center items-center">
-			{alert.errorMessage && <Alert>{alert.errorMessage}</Alert>}
-			<div className="flex flex-col gap-2">
+			{alert.errorMessage && <Alert type="error">{alert.errorMessage}</Alert>}
+			<div className="flex flex-col gap-2 border-2 p-4 border-gray-400/5 rounded-sm shadow-2xl">
 				<div>LOGO</div>
 				{!pathname.includes("login") ? (
 					<>

@@ -28,11 +28,11 @@ export const router = createBrowserRouter([
 				element: <RootCalendar />,
 			},
 			{
-				path: ":day",
+				path: "day/:day",
 				element: <Day />,
 			},
 			{
-				path: "stats/:month",
+				path: "stats",
 				element: <Stats />,
 			},
 			{

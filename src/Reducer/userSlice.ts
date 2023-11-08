@@ -6,7 +6,8 @@ export type UserType = {
 	phoneNumber: string | null;
 	photoURL: string | null;
 	uid: string;
-	firestoreUserDocRef?: string;
+	firestoreUserDocId?: string;
+	currency: string;
 };
 
 const initialState: UserType = {
@@ -15,7 +16,8 @@ const initialState: UserType = {
 	phoneNumber: "",
 	photoURL: "",
 	uid: "",
-	firestoreUserDocRef: "",
+	firestoreUserDocId: "",
+	currency: "",
 };
 
 export const userSlice = createSlice({
@@ -26,16 +28,17 @@ export const userSlice = createSlice({
 			const { payload } = action;
 			return { ...state, ...payload };
 		},
-		setDocRef: (state, action: PayloadAction<string>) => {
-			return { ...state, firestoreUserDocRef: action.payload };
+		updateUser: (state, action: PayloadAction<Partial<UserType>>) => {
+			const { payload } = action;
+			console.log("updateUserS", payload);
+			return { ...state, ...payload };
 		},
-		// updateUser: () => {},
 		removeUser: () => {
 			return initialState;
 		},
 	},
 });
 
-export const { setUser, removeUser, setDocRef } = userSlice.actions;
+export const { setUser, removeUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

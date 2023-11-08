@@ -10,7 +10,6 @@ const login = async ({ email, password }: AuthType) => {
 			email,
 			password
 		);
-		// console.log("userCredential", userCredential);
 		return userCredential;
 	} catch (error) {
 		throw error;

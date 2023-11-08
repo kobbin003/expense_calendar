@@ -1,31 +1,34 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import { dateToString } from "../../../utils/date/date-fns/dateToString";
-import { useGetExpenseByDay } from "../../../hook/useGetExpenseByDay";
 import { useEffect, useState } from "react";
+import { useFormatCurrency } from "../../../hook/useFormatCurrency";
+import { dateToyyyyMMdd } from "../../../utils/date/date-fns/dateToyyyyMMdd";
+import { isSameDay } from "date-fns";
+import { useGetExpenseListByDate } from "../../../hook/useGetExpenseListByDate";
 
 type Props = {
 	date: Date;
 };
 
 const CalendarDay = ({ date }: Props) => {
-	const { uid, firestoreUserDocRef } = useSelector(
+	const { uid, firestoreUserDocId } = useSelector(
 		(state: RootState) => state.user
 	);
+	const day = dateToyyyyMMdd(date);
 
-	const param = dateToString(date);
+	const now = new Date();
 
-	const now = dateToString(new Date());
-
-	const dateIsToday = now == dateToString(date);
+	const dateIsToday = isSameDay(date, now);
 
 	const [totalExpenseForDay, setTotalExpenseForDay] = useState(0);
 
-	const { data, isLoading } = useGetExpenseByDay(
-		param || "",
-		firestoreUserDocRef || ""
+	const { data, isLoading } = useGetExpenseListByDate(
+		day,
+		firestoreUserDocId || ""
 	);
+
+	const amount = useFormatCurrency(totalExpenseForDay);
 
 	useEffect(() => {
 		let total = 0;
@@ -38,20 +41,24 @@ const CalendarDay = ({ date }: Props) => {
 
 	return (
 		<Link
-			to={`/${uid}/${param}`}
+			to={`/in/${uid}/day/${day}`}
 			className={`border border-gray-200 shadow-lg hover:scale-105 hover:bg-gray-200 p-2 ${
-				dateIsToday ? "bg-gray-200" : "text-gray-800"
+				dateIsToday ? "bg-gray-300" : "text-gray-800"
 			} flex flex-col md:flex-row justify-between`}
 		>
-			<p className={`${dateIsToday ? " text-3xl sm:text-4xl" : ""}`}>
+			<p
+				className={`${
+					dateIsToday ? "text-base sm:text-xl" : "text-sm sm:text-base"
+				}`}
+			>
 				{date.getDate()}
 			</p>
 
-			<div className="flex flex-col justify-end">
+			<div className="flex flex-col justify-end ">
 				{isLoading ? (
 					<span className="loading loading-dots loading-xs"></span>
 				) : (
-					<span>{totalExpenseForDay}</span>
+					<span className=" text-xs md:text-sm italic">{amount}</span>
 				)}
 			</div>
 		</Link>

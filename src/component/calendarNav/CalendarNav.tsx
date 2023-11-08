@@ -30,10 +30,10 @@ const CalendarNav = ({ dateSelected, setDateSelected }: Props) => {
 			<div className="flex justify-center items-center ">
 				<button
 					onClick={handleClickGoToPrevMonth}
-					className="bg-gray-200/80 hover:bg-gray-200 border-none p-2 rounded-sm h-max w-max"
+					className="scale-125 hover:scale-150 border-none p-2 rounded-sm h-max w-max"
 				>
 					<img
-						src="/src/assets/navLeft.svg"
+						src="/src/assets/left.svg"
 						alt=""
 						className="h-3 w-3 min-h-[12px] min-w-[12px]"
 					/>
@@ -60,10 +60,10 @@ const CalendarNav = ({ dateSelected, setDateSelected }: Props) => {
 				</div>
 				<button
 					onClick={handleClickGoToNextMonth}
-					className="bg-gray-200/80 hover:bg-gray-200 border-none p-2 rounded-sm h-max w-max"
+					className="border-none p-2 rounded-sm h-max w-max scale-125 hover:scale-150"
 				>
 					<img
-						src="/src/assets/navRight.svg"
+						src="/src/assets/right.svg"
 						alt=""
 						className="h-3 w-3 min-h-[12px] min-w-[12px]"
 					/>

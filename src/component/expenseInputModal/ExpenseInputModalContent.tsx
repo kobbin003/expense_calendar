@@ -1,20 +1,28 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { ExpenseType, addExpense } from "../../firestoreFns/expense/addExpense";
-import { useSelector } from "react-redux";
+import { addExpense } from "../../firestoreFns/expense/addExpense";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
-import { dateToString } from "../../utils/date/date-fns/dateToString";
+import { ExpenseType } from "../../types/expense";
+import { dateToyyyyMMdd } from "../../utils/date/date-fns/dateToyyyyMMdd";
+import {
+	emptySuccessMsg,
+	setIsLoading,
+	setSuccessMsg,
+} from "../../Reducer/alertSlice";
 
 type Props = {
 	handleClickCloseModal: () => void;
 };
 
 const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
-	const { uid, firestoreUserDocRef } = useSelector(
+	const { uid, firestoreUserDocId } = useSelector(
 		(state: RootState) => state.user
 	);
 
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
 
 	const [formData, setFormData] = useState<{ [key: string]: string }>({
 		amount: "",
@@ -45,24 +53,33 @@ const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
+		// start loading
+		dispatch(setIsLoading(true));
+
 		const now = new Date();
 
-		const nowParams = dateToString(now);
+		const dayParams = dateToyyyyMMdd(now);
 
 		const expense: ExpenseType = {
 			amount: Number(formData.amount),
 			description: formData.description ? formData.description.toString() : "",
 			expenseDate: now,
-			expenseDay: nowParams,
 		};
 
-		if (firestoreUserDocRef) {
-			addExpense(firestoreUserDocRef, expense).then(() => {
-				navigate(`/${uid}/${nowParams}`);
-				/** close modal after addExpense
-				 * instead on on onClick event
-				 */
+		if (firestoreUserDocId) {
+			addExpense(firestoreUserDocId, expense).then(() => {
+				navigate(`/in/${uid}/day/${dayParams}`);
+				// stop loading
+				dispatch(setIsLoading(false));
+				/** close modal after addExpense instead of on onClick event */
 				handleClickCloseModal();
+				// set success message
+				dispatch(setSuccessMsg("expense added!"));
+				// remove success message
+				setTimeout(() => {
+					dispatch(emptySuccessMsg());
+				}, 2000);
+				// reset the formdata
 				setFormData({
 					amount: "",
 					description: "",
@@ -96,56 +113,54 @@ const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 	}, []);
 
 	return (
-		<>
+		<form
+			className="form-control gap-2"
+			onSubmit={handleSubmit}
+		>
 			<button
-				className="absolute -top-2 -right-2 border-2 rounded-full h-max px-2
-						 bg-gray-200 text-gray-500 hover:text-black"
+				className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 				onClick={handleClickCancel}
 			>
-				<span className="block scale-y-90">x</span>
+				✕
 			</button>
-			<form
-				className="form-control gap-2"
-				onSubmit={handleSubmit}
-			>
-				{items.map((item) => (
-					<div
-						key={item.name}
-						className="w-full"
+
+			{items.map((item) => (
+				<div
+					key={item.name}
+					className="flex flex-col gap-1"
+				>
+					<label
+						htmlFor={item.name}
+						className="text-xs sm:text-sm text-gray-500 "
 					>
-						<label
-							htmlFor={item.name}
-							className="text-xs text-gray-500"
-						>
-							enter {item.name}
-						</label>
-						<input
-							type={item.type}
-							id={item.name}
-							name={item.name}
-							placeholder={item.name}
-							value={formData[item.name]}
-							className="w-full p-2 border-2 border-gray-400 rounded-sm [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-							onChange={handleOnChange}
-						/>
-					</div>
-				))}
-				<button
-					className="btn btn-accent rounded-sm"
-					type="submit"
-					disabled={disableButton}
-				>
-					Done
-				</button>
-				<button
-					className="btn btn-secondary rounded-sm"
-					onClick={handleClickCancel}
-					type="button"
-				>
-					Cancel
-				</button>
-			</form>
-		</>
+						enter {item.name}
+					</label>
+					<input
+						type={item.type}
+						id={item.name}
+						name={item.name}
+						placeholder={item.name}
+						value={formData[item.name]}
+						className="text-sm w-full p-2 border-2 border-gray-400 rounded-sm [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+						onChange={handleOnChange}
+					/>
+				</div>
+			))}
+			<button
+				className="btn btn-accent rounded-sm"
+				type="submit"
+				disabled={disableButton}
+			>
+				Done
+			</button>
+			<button
+				className="btn btn-secondary rounded-sm"
+				onClick={handleClickCancel}
+				type="button"
+			>
+				Cancel
+			</button>
+		</form>
 	);
 };
 
