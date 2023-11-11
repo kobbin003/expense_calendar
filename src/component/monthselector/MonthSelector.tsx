@@ -38,33 +38,44 @@ const MonthSelector = ({}: Props) => {
 	};
 
 	return (
-		<div className="absolute text-sm font-light bg-red-400">
+		<div className="flex flex-col gap-2 absolute text-sm font-light bg-white border border-gray-300 shadow-md p-2 rounded-md">
 			<p>select a month</p>
-			<form onSubmit={confirmDateSelection}>
-				<select
-					value={inputdate.month}
-					name="month"
-					onChange={onChangeDateSelection}
-				>
-					{months.map((month) => (
-						<option
-							value={month}
-							key={month}
-						>
-							{month}
-						</option>
-					))}
-				</select>
-				<input
-					type="number"
-					name="year"
-					min={2020}
-					className="border w-min"
-					value={inputdate.year}
-					onChange={onChangeDateSelection}
-				/>
+			<form
+				onSubmit={confirmDateSelection}
+				className="form-control gap-2"
+			>
+				<div className="flex flex-row gap-2">
+					<select
+						value={inputdate.month}
+						name="month"
+						onChange={onChangeDateSelection}
+						className="input input-bordered p-0 px-1"
+					>
+						{months.map((month) => (
+							<option
+								value={month}
+								key={month}
+							>
+								{month}
+							</option>
+						))}
+					</select>
+					<input
+						type="number"
+						name="year"
+						min={2020}
+						className="input input-bordered w-20 p-0 px-2"
+						value={inputdate.year}
+						onChange={onChangeDateSelection}
+					/>
+				</div>
 				<div>
-					<button type="submit">Select</button>
+					<button
+						type="submit"
+						className="btn btn-neutral"
+					>
+						Select
+					</button>
 				</div>
 			</form>
 		</div>
