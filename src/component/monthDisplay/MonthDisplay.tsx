@@ -18,7 +18,7 @@ const MonthDisplay = ({}: Props) => {
 		setShowMonthSelector((prev) => !prev);
 	};
 
-	const monthDisplayRef = useRef<HTMLButtonElement>(null);
+	const monthDisplayRef = useRef<HTMLDivElement>(null);
 
 	useClickedOut(monthDisplayRef, () => {
 		setShowMonthSelector(false);
@@ -36,13 +36,12 @@ const MonthDisplay = ({}: Props) => {
 
 	return (
 		<div className="stat-value text-base sm:text-lg md:text-xl min-w-[150px] sm:min-w-[200px]">
-			<button
-				onClick={toggleMonthSelector}
-				ref={monthDisplayRef}
-			>
-				{date}
-			</button>
-			{showMonthSelector && <MonthSelector />}
+			<div ref={monthDisplayRef}>
+				<button onClick={toggleMonthSelector}>{date}</button>
+				{showMonthSelector && (
+					<MonthSelector setShowMonthSelector={setShowMonthSelector} />
+				)}
+			</div>
 		</div>
 	);
 };

@@ -4,7 +4,8 @@ export const useClickedOut = (ref: RefObject<HTMLElement>, cb: () => void) => {
 	useEffect(() => {
 		const targetEl = ref.current;
 		const handleClick = (e: any) => {
-			if (e.target !== targetEl) {
+			// when click outside of targetEl
+			if (!targetEl?.contains(e.target)) {
 				cb();
 			}
 		};

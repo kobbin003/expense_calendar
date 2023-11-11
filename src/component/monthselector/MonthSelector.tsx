@@ -2,9 +2,12 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import monthsList from "../../data/monthList.json";
 import { DateContext } from "../../context/DateContext";
 import { getMonth, getYear, parse } from "date-fns";
-type Props = {};
 
-const MonthSelector = ({}: Props) => {
+type Props = {
+	setShowMonthSelector: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const MonthSelector = ({ setShowMonthSelector }: Props) => {
 	const { months } = monthsList;
 
 	const { dateSelected, setDateSelected } = useContext(DateContext);
@@ -26,9 +29,13 @@ const MonthSelector = ({}: Props) => {
 		setInputDate((prev) => ({ ...prev, [name]: value }));
 	};
 
+	const handleCloseMonthSelector = () => {
+		setShowMonthSelector(false);
+	};
+
 	const confirmDateSelection = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
+		setShowMonthSelector(false);
 		const choosenDate: Date = parse(
 			`01/${inputdate.month}/${inputdate.year}`,
 			"dd/MMMM/yyyy",
@@ -39,6 +46,12 @@ const MonthSelector = ({}: Props) => {
 
 	return (
 		<div className="flex flex-col gap-2 absolute text-sm font-light bg-white border border-gray-300 shadow-md p-2 rounded-md">
+			<button
+				onClick={handleCloseMonthSelector}
+				className="absolute bg-gray-100 right-2 rounded-full w-5 h-5"
+			>
+				<span className="block scale-y-95">x</span>
+			</button>
 			<p>select a month</p>
 			<form
 				onSubmit={confirmDateSelection}

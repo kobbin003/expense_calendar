@@ -59,13 +59,23 @@ const Header = ({}: Props) => {
 						/>
 					</summary>
 					<ul className="dropdown-content z-[1] menu p-1 m-1 shadow bg-base-100 rounded-sm w-max ">
-						<li>
-							<Link to={`/in/${uid}/settings`}>Settings</Link>
+						<li className="border-b border-gray-300/50 shadow-md">
+							<Link
+								to={`/in/${uid}/settings`}
+								className="rounded-sm"
+							>
+								Settings
+							</Link>
 						</li>
-						<li>
-							<Link to={`/in/${uid}/stats`}>Stats</Link>
+						<li className="border-b border-gray-300/50 shadow-md">
+							<Link
+								to={`/in/${uid}/stats`}
+								className="rounded-sm"
+							>
+								Stats
+							</Link>
 						</li>
-						<li>
+						<li className="border-b border-gray-300/50 shadow-md">
 							<button
 								onClick={handleClickLogOut}
 								className="rounded-sm"
