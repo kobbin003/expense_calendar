@@ -17,7 +17,7 @@ const Header = ({}: Props) => {
 
 	const dropdownRef = useRef<HTMLDetailsElement>(null);
 
-	const closeDropDownSummaryRef = useRef<HTMLElement>(null);
+	const closeDropDownImageRef = useRef<HTMLImageElement>(null);
 
 	const notInRootCalendar = ["day", "stats", "settings"].some((str) =>
 		pathname.includes(str)
@@ -31,7 +31,7 @@ const Header = ({}: Props) => {
 		googleSignOut();
 	};
 
-	useClickedOut(closeDropDownSummaryRef, () => {
+	useClickedOut(closeDropDownImageRef, () => {
 		console.log("clicked outside");
 		const dropdownEl = dropdownRef.current as HTMLDetailsElement;
 		dropdownEl.removeAttribute("open");
@@ -50,18 +50,15 @@ const Header = ({}: Props) => {
 					className="dropdown dropdown-bottom dropdown-end"
 					ref={dropdownRef}
 				>
-					<summary
-						className="list-none hover:cursor-pointer"
-						ref={closeDropDownSummaryRef}
-					>
+					<summary className="list-none hover:cursor-pointer">
 						<img
 							src={photoURL ? photoURL : "/src/assets/defaultProfile.svg"}
 							alt=""
 							className="border border-gray-500 rounded-full h-7 w-7"
+							ref={closeDropDownImageRef}
 						/>
 					</summary>
 					<ul className="dropdown-content z-[1] menu p-1 m-1 shadow bg-base-100 rounded-sm w-max ">
-						{/* <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"> */}
 						<li>
 							<Link to={`/in/${uid}/settings`}>Settings</Link>
 						</li>

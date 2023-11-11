@@ -3,8 +3,7 @@ import { UserType } from "../../../Reducer/userSlice";
 import Compressor from "compressorjs";
 import { checkSizeImage } from "../../../utils/checkSizeImage";
 import { emptyErrorMsg, setErrorMsg } from "../../../Reducer/alertSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
+import { useDispatch } from "react-redux";
 
 type Props = {
 	settingsProfile: Partial<UserType>;
@@ -12,23 +11,22 @@ type Props = {
 	setPhotoFile: React.Dispatch<React.SetStateAction<File | undefined>>;
 };
 
-// const compressPhotoFile = (file: File) => {};
 const ProfileImage = ({
 	settingsProfile,
 	setSettingsProfile,
 	setPhotoFile,
 }: Props) => {
 	const { photoURL } = settingsProfile;
-	const { ...alerts } = useSelector((state: RootState) => state.alert);
-	console.log("alerts", alerts);
+
 	const dispatch = useDispatch();
+
 	const handleOnChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const file = e.target.files[0];
 			const photoURL = URL.createObjectURL(file);
 			const photoAllowedToStore = checkSizeImage(file);
 			if (photoAllowedToStore) {
-				console.log("good size", file.size);
+				// console.log("good size", file.size);
 				setSettingsProfile((prev) => ({ ...prev, photoURL }));
 				/** compressfile using compressjs */
 				new Compressor(file, {

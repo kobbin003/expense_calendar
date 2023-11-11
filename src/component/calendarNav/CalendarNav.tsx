@@ -54,7 +54,7 @@ const CalendarNav = () => {
 				</div>
 				<button
 					onClick={handleClickGoToNextMonth}
-					className="border-none p-2 rounded-sm h-max w-max scale-125 hover:scale-150"
+					className="border-none p-2 rounded-sm h-max w-max scale-125 hover:scale-150 z-[0]"
 				>
 					<img
 						src="/src/assets/right.svg"
