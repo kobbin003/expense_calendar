@@ -5,13 +5,16 @@ type Props = {};
 
 const AddExpense = ({}: Props) => {
 	const expenseModalRef = useRef<HTMLDialogElement>(null);
+
 	const handleClickShowModal = () => {
 		/** HTMLDialogElement's  showModal() is equivalent to open attribute of <dialog> element*/
 		expenseModalRef.current && expenseModalRef.current.showModal();
 	};
+
 	const handleClickCloseModal = () => {
 		expenseModalRef.current && expenseModalRef.current.close();
 	};
+
 	return (
 		<div>
 			<button
