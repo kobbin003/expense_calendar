@@ -1,15 +1,23 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../store/store";
+import { useSubscribeExpense } from "../../hook/useSubscribeExpense";
+import ExpenseVsWeekDays from "./components/ExpenseVsWeekDays";
 
 type Props = {};
 
 const Stats = ({}: Props) => {
-	const { uid } = useSelector((state: RootState) => state.user);
+	const { uid, firestoreUserDocId } = useSelector(
+		(state: RootState) => state.user
+	);
+
+	const { allExpenses } = useSubscribeExpense(firestoreUserDocId || "");
+
 	return (
 		<div>
-			<h1>Stats</h1>
 			<Link to={`/in/${uid}`}>Calendar</Link>
+			<h1>Stats</h1>
+			{allExpenses && <ExpenseVsWeekDays allExpenses={allExpenses} />}
 		</div>
 	);
 };

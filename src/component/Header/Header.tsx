@@ -32,7 +32,7 @@ const Header = ({}: Props) => {
 	};
 
 	useClickedOut(closeDropDownImageRef, () => {
-		console.log("clicked outside");
+		// console.log("clicked outside");
 		const dropdownEl = dropdownRef.current as HTMLDetailsElement;
 		dropdownEl.removeAttribute("open");
 	});
