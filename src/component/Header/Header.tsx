@@ -41,7 +41,7 @@ const Header = ({}: Props) => {
 		<div
 			className={`w-screen ${
 				notInRootCalendar ? "relative" : "fixed"
-			} flex justify-between items-center pb-1 px-4`}
+			} flex justify-between items-center pb-1 px-4 z-10`}
 		>
 			<div>S</div>
 
@@ -60,26 +60,17 @@ const Header = ({}: Props) => {
 					</summary>
 					<ul className="dropdown-content z-[1] menu p-1 m-1 shadow bg-base-100 rounded-sm w-max ">
 						<li className="border-b border-gray-300/50 shadow-md">
-							<Link
-								to={`/in/${uid}/settings`}
-								className="rounded-sm"
-							>
+							<Link to={`/in/${uid}/settings`} className="rounded-sm">
 								Settings
 							</Link>
 						</li>
 						<li className="border-b border-gray-300/50 shadow-md">
-							<Link
-								to={`/in/${uid}/stats`}
-								className="rounded-sm"
-							>
+							<Link to={`/in/${uid}/stats`} className="rounded-sm">
 								Stats
 							</Link>
 						</li>
 						<li className="border-b border-gray-300/50 shadow-md">
-							<button
-								onClick={handleClickLogOut}
-								className="rounded-sm"
-							>
+							<button onClick={handleClickLogOut} className="rounded-sm">
 								logout
 							</button>
 						</li>

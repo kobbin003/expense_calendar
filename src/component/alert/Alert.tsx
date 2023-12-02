@@ -20,7 +20,7 @@ const Alert = ({ children, type }: AlertProp) => {
 	const alertClass = alerts[type].alertClass;
 
 	return (
-		<div className="fixed w-screen flex justify-center top-2 z-30">
+		<div className="fixed w-screen flex justify-center top-2 ">
 			<div className={`alert ${alertClass} p-0 rounded-md px-3 py-1 w-max`}>
 				<CurrentAlert />
 				<span>{children}</span>

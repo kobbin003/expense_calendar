@@ -103,11 +103,11 @@ const Settings = ({}: Props) => {
 			settingsProfile.currency !== initialStateRef.current.currency ||
 			settingsProfile.photoURL !== initialStateRef.current.photoURL
 		) {
-			console.log(
-				"enable save",
-				settingsProfile.currency,
-				initialStateRef.current.currency
-			);
+			// console.log(
+			// 	"enable save",
+			// 	settingsProfile.currency,
+			// 	initialStateRef.current.currency
+			// );
 			setDisableSave(false);
 		} else {
 			setDisableSave(true);
@@ -116,10 +116,7 @@ const Settings = ({}: Props) => {
 
 	return (
 		<div className="flex flex-col gap-2 p-2">
-			<Link
-				to={`/in/${uid}`}
-				className=""
-			>
+			<Link to={`/in/${uid}`} className="">
 				<img
 					src="/src/assets/goBack.svg"
 					alt=""
