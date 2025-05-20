@@ -4,9 +4,7 @@ import { RootState } from "../../store/store";
 import { useSubscribeExpense } from "../../hook/useSubscribeExpense";
 import ExpenseVsWeekDays from "./components/ExpenseVsWeekDays";
 
-type Props = {};
-
-const Stats = ({}: Props) => {
+const Stats = () => {
 	const { uid, firestoreUserDocId } = useSelector(
 		(state: RootState) => state.user
 	);

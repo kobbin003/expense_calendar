@@ -10,9 +10,7 @@ import Loader from "../../component/loader/Loader";
 import { yyyyMMddToDate } from "../../utils/date/date-fns/yyyyMMddToDate";
 import { format } from "date-fns";
 
-type Props = {};
-
-const Day = ({}: Props) => {
+const Day = () => {
 	const { firestoreUserDocId } = useSelector((state: RootState) => state.user);
 
 	const { user, day } = useParams();
@@ -50,12 +48,9 @@ const Day = ({}: Props) => {
 
 	return (
 		<div className="flex flex-col p-2">
-			<Link
-				to={`/in/${user}`}
-				className=""
-			>
+			<Link to={`/in/${user}`} className="">
 				<img
-					src="/src/assets/goBack.svg"
+					src="/goBack.svg"
 					alt=""
 					className="h-7 p-2  hover:scale-105 border border-gray-500/50 rounded-sm shadow"
 				/>
@@ -63,11 +58,7 @@ const Day = ({}: Props) => {
 
 			<div className="stats shadow w-max rounded-md my-6 stats-vertical sm:stats-horizontal">
 				<div className="stat flex items-center">
-					<img
-						src="/src/assets/calendar.svg"
-						alt=""
-						className="h-6"
-					/>
+					<img src="/calendar.svg" alt="" className="h-6" />
 					<div className="stat-desc text-sm sm:text-base text-black drop-shadow-lg">
 						<span>{d}</span>
 						<span className="text-xs">{dateSuffix}&nbsp;</span>

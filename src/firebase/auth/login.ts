@@ -12,7 +12,7 @@ const login = async ({ email, password }: AuthType) => {
 		);
 		return userCredential;
 	} catch (error) {
-		throw error;
+		console.error(error);
 	}
 };
 export default login;

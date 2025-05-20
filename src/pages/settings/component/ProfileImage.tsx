@@ -67,7 +67,7 @@ const ProfileImage = ({
 					onChange={handleOnChangeFile}
 				/>
 				<img
-					src={photoURL ? photoURL : "/src/assets/defaultProfile.svg"}
+					src={photoURL ? photoURL : "/defaultProfile.svg"}
 					alt=""
 					className="border border-gray-500 rounded-full h-7 w-7 hover:cursor-pointer"
 				/>

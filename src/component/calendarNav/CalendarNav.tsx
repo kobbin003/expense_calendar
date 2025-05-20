@@ -13,11 +13,13 @@ const CalendarNav = () => {
 	const { firestoreUserDocId } = useSelector((state: RootState) => state.user);
 
 	const handleClickGoToPrevMonth = () => {
+		console.log("prev btn clicked");
 		const prevMonth = subMonths(dateSelected, 1);
 		setDateSelected(prevMonth);
 	};
 
 	const handleClickGoToNextMonth = () => {
+		console.log("next btn clicked");
 		const prevMonth = addMonths(dateSelected, 1);
 		setDateSelected(prevMonth);
 	};
@@ -30,7 +32,7 @@ const CalendarNav = () => {
 					className="scale-125 hover:scale-150 border-none p-2 rounded-sm h-max w-max"
 				>
 					<img
-						src="/src/assets/left.svg"
+						src="/left.svg"
 						alt=""
 						className="h-3 w-3 min-h-[12px] min-w-[12px]"
 					/>
@@ -47,7 +49,7 @@ const CalendarNav = () => {
 								/>
 							)}
 						</div>
-						<div className="stat-actions">
+						<div className="stat-actions z-10">
 							<AddExpense />
 						</div>
 					</div>
@@ -57,7 +59,7 @@ const CalendarNav = () => {
 					className="border-none p-2 rounded-sm h-max w-max scale-125 hover:scale-150 z-[0]"
 				>
 					<img
-						src="/src/assets/right.svg"
+						src="/right.svg"
 						alt=""
 						className="h-3 w-3 min-h-[12px] min-w-[12px]"
 					/>

@@ -10,10 +10,11 @@ import { getUser } from "../../firestoreFns/user/getUser";
 import { emptyErrorMsg, setErrorMsg } from "../../Reducer/alertSlice";
 import { useEffect } from "react";
 import Alert from "../alert/Alert";
+import Logo from "../logo/Logo";
 
-type Props = {};
+// type Props = {};
 
-const Auth = (_: Props) => {
+const Auth = () => {
 	const { pathname } = useLocation();
 
 	const dispatch = useDispatch();
@@ -68,18 +69,18 @@ const Auth = (_: Props) => {
 	//* empty error on start
 	useEffect(() => {
 		dispatch(emptyErrorMsg());
-	}, []);
+	}, [dispatch]);
 
 	//* empty error on path change.
 	useEffect(() => {
 		dispatch(emptyErrorMsg());
-	}, [pathname]);
+	}, [pathname, dispatch]);
 
 	return (
 		<div className="h-screen w-screen flex flex-col justify-center items-center">
 			{alert.errorMessage && <Alert type="error">{alert.errorMessage}</Alert>}
 			<div className="flex flex-col gap-2 border-2 p-4 border-gray-400/5 rounded-sm shadow-2xl">
-				<div>LOGO</div>
+				<Logo />
 				{!pathname.includes("login") ? (
 					<>
 						<AuthForm type="Signup" />
@@ -90,17 +91,14 @@ const Auth = (_: Props) => {
 						</div>
 						<AuthButton
 							bgColor="bg-green-400"
-							img="/src/assets/google.svg"
+							img="/google.svg"
 							desc="Continue with Google"
 							onClick={handleGoogleAuth}
 						/>
 						<div className="w-full h-0 border-1 border-gray-300"></div>
 						<div className="w-full flex">
 							<p>Already have an account?</p>{" "}
-							<Link
-								to={`/login`}
-								className="text-blue-600 pl-1"
-							>
+							<Link to={`/login`} className="text-blue-600 pl-1">
 								Log in
 							</Link>
 						</div>
@@ -111,10 +109,7 @@ const Auth = (_: Props) => {
 						<div className="w-full h-0 border-1 border-gray-300"></div>
 						<div className="w-full flex">
 							<p>Don't have an account?</p>{" "}
-							<Link
-								to={`/`}
-								className="text-blue-600 pl-1"
-							>
+							<Link to={`/`} className="text-blue-600 pl-1">
 								Sign up
 							</Link>
 						</div>

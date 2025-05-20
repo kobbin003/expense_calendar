@@ -11,7 +11,7 @@ import { weekdays } from "../../../data/weekDaysList.json";
 import { Expense } from "../../../hook/useSubscribeExpense";
 
 export const weekDaysData = (allExpenses: Expense[] | null) => {
-	const expenses: { [key: string]: any } = {
+	const expenses: { [key: string]: number | undefined } = {
 		Monday: allExpenses
 			?.filter((expense) => isMonday(expense.data.expenseDate.toDate()))
 			.reduce((acc, { data }) => acc + data.amount, 0),

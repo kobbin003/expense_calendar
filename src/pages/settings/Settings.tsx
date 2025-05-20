@@ -17,14 +17,12 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase/firebaseConfig";
 
-type Props = {};
-
 export type SettingsProfile = {
 	currency: string;
 	photoURL: string | null;
 };
 
-const Settings = ({}: Props) => {
+const Settings = () => {
 	const { uid, currency, firestoreUserDocId, photoURL } = useSelector(
 		(state: RootState) => state.user
 	);
@@ -95,7 +93,7 @@ const Settings = ({}: Props) => {
 
 	useEffect(() => {
 		dispatch(emptySuccessMsg());
-	}, []);
+	}, [dispatch]);
 
 	/** enable save button only if values are changed */
 	useEffect(() => {
@@ -118,7 +116,7 @@ const Settings = ({}: Props) => {
 		<div className="flex flex-col gap-2 p-2">
 			<Link to={`/in/${uid}`} className="">
 				<img
-					src="/src/assets/goBack.svg"
+					src="/goBack.svg"
 					alt=""
 					className="h-7 p-2  hover:scale-105 border border-gray-500/50 rounded-sm shadow"
 				/>

@@ -1,6 +1,4 @@
-type Props = {};
-
-const Loading = ({}: Props) => {
+const Loading = () => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

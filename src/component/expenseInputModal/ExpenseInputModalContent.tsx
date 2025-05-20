@@ -15,6 +15,10 @@ type Props = {
 	handleClickCloseModal: () => void;
 };
 
+const items = [
+	{ name: "amount", type: "text" },
+	{ name: "description", type: "text" },
+];
 const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 	const { uid, firestoreUserDocId } = useSelector(
 		(state: RootState) => state.user
@@ -30,11 +34,6 @@ const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 	});
 
 	const [disableButton, setDisableButton] = useState(true);
-
-	const items = [
-		{ name: "amount", type: "text" },
-		{ name: "description", type: "text" },
-	];
 
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev) => {
@@ -53,20 +52,20 @@ const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		// start loading
-		dispatch(setIsLoading(true));
+		if (firestoreUserDocId && formData.amount) {
+			const now = new Date();
 
-		const now = new Date();
+			const dayParams = dateToyyyyMMdd(now);
 
-		const dayParams = dateToyyyyMMdd(now);
-
-		const expense: ExpenseType = {
-			amount: Number(formData.amount),
-			description: formData.description ? formData.description.toString() : "",
-			expenseDate: now,
-		};
-
-		if (firestoreUserDocId) {
+			const expense: ExpenseType = {
+				amount: Number(formData.amount),
+				description: formData.description
+					? formData.description.toString()
+					: "",
+				expenseDate: now,
+			};
+			// start loading
+			dispatch(setIsLoading(true));
 			addExpense(firestoreUserDocId, expense).then(() => {
 				navigate(`/in/${uid}/day/${dayParams}`);
 				// stop loading
@@ -113,11 +112,9 @@ const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 	}, []);
 
 	return (
-		<form
-			className="form-control gap-2"
-			onSubmit={handleSubmit}
-		>
+		<form className="form-control gap-2" onSubmit={handleSubmit}>
 			<button
+				type="button"
 				className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
 				onClick={handleClickCancel}
 			>
@@ -125,10 +122,7 @@ const ExpenseInputModalContent = ({ handleClickCloseModal }: Props) => {
 			</button>
 
 			{items.map((item) => (
-				<div
-					key={item.name}
-					className="flex flex-col gap-1"
-				>
+				<div key={item.name} className="flex flex-col gap-1">
 					<label
 						htmlFor={item.name}
 						className="text-xs sm:text-sm text-gray-500 "

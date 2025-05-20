@@ -5,6 +5,6 @@ export const googleSignOut = () => {
 	try {
 		signOut(auth);
 	} catch (error) {
-		throw error;
+		console.error(error);
 	}
 };

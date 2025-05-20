@@ -15,7 +15,7 @@ async function signUp({ email, password }: AuthType) {
 		);
 		return userCredential;
 	} catch (error) {
-		throw error;
+		console.error(error);
 	}
 }
 

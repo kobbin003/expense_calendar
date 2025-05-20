@@ -1,9 +1,7 @@
 import { useRef } from "react";
 import ExpenseInputModalContent from "../expenseInputModal/ExpenseInputModalContent";
 
-type Props = {};
-
-const AddExpense = ({}: Props) => {
+const AddExpense = () => {
 	const expenseModalRef = useRef<HTMLDialogElement>(null);
 
 	const handleClickShowModal = () => {
@@ -23,10 +21,7 @@ const AddExpense = ({}: Props) => {
 			>
 				Add Expense
 			</button>
-			<dialog
-				className="modal"
-				ref={expenseModalRef}
-			>
+			<dialog className="modal" ref={expenseModalRef}>
 				<div className="modal-box w-3/4 sm:w-2/4 md:w-1/3 rounded-md overflow-visible h-max min-h-16 px-8 py-6">
 					<ExpenseInputModalContent
 						handleClickCloseModal={handleClickCloseModal}

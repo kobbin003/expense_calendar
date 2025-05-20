@@ -4,9 +4,7 @@ import MonthSelector from "../monthselector/MonthSelector";
 import { DateContext } from "../../context/DateContext";
 import { useClickedOut } from "../../hook/useClickedOut";
 
-type Props = {};
-
-const MonthDisplay = ({}: Props) => {
+const MonthDisplay = () => {
 	const { dateSelected, setDateSelected } = useContext(DateContext);
 
 	// const today = getDateTimeComponents(dateSelected);

@@ -10,6 +10,11 @@ import { emptyErrorMsg, setErrorMsg } from "../../Reducer/alertSlice";
 
 type UserFormType = { email: string; password: string };
 
+const initialFormData = {
+	email: "",
+	password: "",
+};
+
 const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 	const dispatch = useDispatch();
 
@@ -17,10 +22,6 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 
 	const navigate = useNavigate();
 
-	const initialFormData = {
-		email: "",
-		password: "",
-	};
 	const [formData, setFormData] = useState<UserFormType>(initialFormData);
 
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,23 +43,25 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 		if (type == "Login") {
 			login(formData)
 				.then((res) => {
-					const {
-						user: { displayName, email, photoURL, phoneNumber, uid },
-					} = res;
-					const userInfo = {
-						displayName,
-						email,
-						photoURL,
-						phoneNumber,
-						uid,
-						currency: "INR",
-					};
-					//*  set the user in redux state
-					dispatch(setUser(userInfo));
-					//* navigate to app
-					navigate(`/in/${uid}`);
-					//* empty error on success
-					dispatch(emptyErrorMsg());
+					if (res) {
+						const {
+							user: { displayName, email, photoURL, phoneNumber, uid },
+						} = res;
+						const userInfo = {
+							displayName,
+							email,
+							photoURL,
+							phoneNumber,
+							uid,
+							currency: "INR",
+						};
+						//*  set the user in redux state
+						dispatch(setUser(userInfo));
+						//* navigate to app
+						navigate(`/in/${uid}`);
+						//* empty error on success
+						dispatch(emptyErrorMsg());
+					}
 				})
 				.catch((err) => {
 					console.log("email login error", err);
@@ -67,27 +70,29 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 		} else {
 			signUp(formData)
 				.then((res) => {
-					const {
-						user: { displayName, email, photoURL, phoneNumber, uid },
-					} = res;
-					// add "USD" as default currency
-					const userInfo = {
-						displayName,
-						email,
-						photoURL,
-						phoneNumber,
-						uid,
-						currency: "USD",
-					};
-					userInfo.currency = "USD";
-					//*  add the user in firestore
-					addUser(userInfo);
-					//*  set the user in redux state
-					dispatch(setUser(userInfo));
-					//* navigate to app
-					navigate(`/in/${uid}`);
-					//* empty error on success
-					dispatch(emptyErrorMsg());
+					if (res) {
+						const {
+							user: { displayName, email, photoURL, phoneNumber, uid },
+						} = res;
+						// add "USD" as default currency
+						const userInfo = {
+							displayName,
+							email,
+							photoURL,
+							phoneNumber,
+							uid,
+							currency: "USD",
+						};
+						userInfo.currency = "USD";
+						//*  add the user in firestore
+						addUser(userInfo);
+						//*  set the user in redux state
+						dispatch(setUser(userInfo));
+						//* navigate to app
+						navigate(`/in/${uid}`);
+						//* empty error on success
+						dispatch(emptyErrorMsg());
+					}
 				})
 				.catch((err) => {
 					console.log("email signup error", err);
@@ -102,10 +107,7 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 	}, [pathname]);
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className="form-control gap-2"
-		>
+		<form onSubmit={handleSubmit} className="form-control gap-2">
 			<input
 				type="email"
 				name="email"
@@ -122,11 +124,7 @@ const AuthForm = ({ type }: { type: "Login" | "Signup" }) => {
 				onChange={handleOnChange}
 				className="border-2 focus:outline-none border-gray-400 rounded-sm p-1"
 			/>
-			<AuthButton
-				bgColor="bg-orange-400"
-				img="/src/assets/mail.svg"
-				desc={type}
-			/>
+			<AuthButton bgColor="bg-orange-400" img="/mail.svg" desc={type} />
 		</form>
 	);
 };

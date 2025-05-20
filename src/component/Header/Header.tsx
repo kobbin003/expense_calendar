@@ -5,10 +5,9 @@ import { googleSignOut } from "../../firebase/auth/googleSignOut";
 import { RootState } from "../../store/store";
 import { useRef } from "react";
 import { useClickedOut } from "../../hook/useClickedOut";
+import Logo from "../logo/Logo";
 
-type Props = {};
-
-const Header = ({}: Props) => {
+const Header = () => {
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
@@ -41,9 +40,13 @@ const Header = ({}: Props) => {
 		<div
 			className={`w-screen ${
 				notInRootCalendar ? "relative" : "fixed"
-			} flex justify-between items-center pb-1 px-4 z-10`}
+			} flex justify-between items-center pb-1 px-4 `}
 		>
-			<div>S</div>
+			<div className="z-50">
+				<Link to={`/in/${uid}`} className="z-50">
+					<Logo />
+				</Link>
+			</div>
 
 			<div className="flex items-center justify-center gap-2">
 				<details
@@ -52,7 +55,7 @@ const Header = ({}: Props) => {
 				>
 					<summary className="list-none hover:cursor-pointer">
 						<img
-							src={photoURL ? photoURL : "/src/assets/defaultProfile.svg"}
+							src={photoURL ? photoURL : "/defaultProfile.svg"}
 							alt=""
 							className="border border-gray-500 rounded-full h-7 w-7"
 							ref={closeDropDownImageRef}

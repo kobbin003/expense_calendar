@@ -1,6 +1,4 @@
-type Props = {};
-
-const Loader = ({}: Props) => {
+const Loader = () => {
 	return <span className="loading loading-dots loading-sm"></span>;
 };
 
