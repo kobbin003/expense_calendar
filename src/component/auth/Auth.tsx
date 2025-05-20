@@ -12,8 +12,6 @@ import { useEffect } from "react";
 import Alert from "../alert/Alert";
 import Logo from "../logo/Logo";
 
-// type Props = {};
-
 const Auth = () => {
 	const { pathname } = useLocation();
 
